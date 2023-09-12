@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from rest_framework.response import Response
 from rest_framework import status
 from .models import *
@@ -7,7 +7,11 @@ from .serializers import *
 
 
 def all_products_view(request):
-    products = Product.objects.all()
+    try:
+        products = Product.objects.all()
+    except Product.DoesNotExist:
+        raise Http404("No products found.")
+
     serializer = ProductSerializer(products, many=True)
     data = serializer.data
     return JsonResponse(data, safe=False)
