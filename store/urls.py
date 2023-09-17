@@ -7,6 +7,7 @@ urlpatterns = [
     path('products/', views.all_products_view, name='all-products'),
     path('categories/', views.all_categories_view, name='all-categories'),
     path('cart/<int:user_id>/', views.cart_by_user_view, name='cart-by-user'),
+    path('products/category/<str:category_name>/', views.products_by_category_view, name='products-by-category'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -33,3 +33,13 @@ def cart_by_user_view(request, user_id):
     serializer = CartSerializer(cart)
     data = serializer.data
     return JsonResponse(data, safe=False)
+
+def products_by_category_view(request, category_name):
+    try:
+        products = Product.objects.filter(category__name=category_name)
+    except Product.DoesNotExist:
+        raise Http404("No products found in this category.")
+
+    serializer = ProductSerializer(products, many=True)
+    data = serializer.data
+    return JsonResponse(data, safe=False)

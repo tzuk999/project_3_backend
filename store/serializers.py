@@ -10,6 +10,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField(many=True)
     
     class Meta:
         model = Product
