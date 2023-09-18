@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from django.contrib.auth.models import User
 
 class CategorySerializer(serializers.ModelSerializer):
     number_of_products = serializers.ReadOnlyField()
@@ -36,3 +37,16 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User(username=validated_data['username'])
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
