@@ -40,6 +40,7 @@ def cart_by_user_view(request, user_id):
     data = serializer.data
     return JsonResponse(data, safe=False)
 
+
 def products_by_category_view(request, category_name):
     try:
         products = Product.objects.filter(category__name=category_name)
@@ -88,6 +89,7 @@ def signup(request):
 
     return JsonResponse({'detail': 'User creation failed'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['POST'])
 def signin(request):
     try:
@@ -114,6 +116,7 @@ def signin(request):
         })
 
     return JsonResponse({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
 def logout(request):
