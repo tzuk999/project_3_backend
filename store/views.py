@@ -9,16 +9,23 @@ from django.contrib.auth import authenticate,login
 from django.contrib.auth.models import User
 import json
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
 
 
 
 def all_products_view(request):
-    try:
-        products = Product.objects.all()
-    except Product.DoesNotExist:
-        raise Http404("No products found.")
+    category_param = request.GET.get('category')
+    search_param = request.GET.get('search')
 
-    serializer = ProductSerializer(products, many=True)
+    queryset = Product.objects.all()
+
+    if category_param:
+        queryset = queryset.filter(category__name__iexact=category_param)
+
+    if search_param:
+        queryset = queryset.filter(Q(name__icontains=search_param))
+
+    serializer = ProductSerializer(queryset, many=True)
     data = serializer.data
     return JsonResponse(data, safe=False)
     
@@ -37,17 +44,6 @@ def cart_by_user_view(request, user_id):
         return JsonResponse({'error': 'Cart not found'}, status=404)
 
     serializer = CartSerializer(cart)
-    data = serializer.data
-    return JsonResponse(data, safe=False)
-
-
-def products_by_category_view(request, category_name):
-    try:
-        products = Product.objects.filter(category__name=category_name)
-    except Product.DoesNotExist:
-        raise Http404("No products found in this category.")
-
-    serializer = ProductSerializer(products, many=True)
     data = serializer.data
     return JsonResponse(data, safe=False)
 
