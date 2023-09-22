@@ -24,11 +24,6 @@ class CartItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CartItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = '__all__'
-
 
 class CartSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
