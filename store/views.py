@@ -162,6 +162,7 @@ def cart_items_view(request, cart_id):
 
         # Create a dictionary with the item's data
         item_data = {
+            'product_id': cart_item.product.id,
             'product_name': cart_item.product.name,
             'quantity': cart_item.quantity,
             'total_price': total_price,
