@@ -215,7 +215,7 @@ def clear_cart(request, cart_id):
         product.save()
         cart_item.delete()
 
-    return Response({'detail': 'Cart cleared and stock updated'}, status=status.HTTP_200_OK)
+    return Response({'detail': 'Purchase completed'}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
